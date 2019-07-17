@@ -7,11 +7,8 @@ void setup(){
 
   // LCD display
   M5.Lcd.print("Hello World");
-
-  BT_setup();
 }
 
 // the loop routine runs over and over again forever
 void loop() {
-  BT_loop();
 }
