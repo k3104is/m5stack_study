@@ -9,8 +9,6 @@
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
 #endif
-void setupScrollArea(uint16_t tfa, uint16_t bfa);
-void scrollAddress(uint16_t vsp);
 
 BluetoothSerial SerialBT;
 // static const s_c_comment_separate = "\n//////////////////////////\n";
@@ -22,7 +20,6 @@ void BT_setup() {
   SerialBT.begin("ESP32test"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
 
-  setupScrollArea(0, 0);
 }
 static UCHAR s_u1_com_dir = 0;
 
@@ -63,25 +60,3 @@ void BT_loop() {
 
 
 
-// ##############################################################################################
-// Setup a portion of the screen for vertical scrolling
-// ##############################################################################################
-// We are using a hardware feature of the display, so we can only scroll in portrait orientation
-void setupScrollArea(uint16_t tfa, uint16_t bfa) {
-  M5.Lcd.writecommand(ILI9341_VSCRDEF); // Vertical scroll definition
-  M5.Lcd.writedata(tfa >> 8);           // Top Fixed Area line count
-  M5.Lcd.writedata(tfa);
-  M5.Lcd.writedata((YMAX-tfa-bfa)>>8);  // Vertical Scrolling Area line count
-  M5.Lcd.writedata(YMAX-tfa-bfa);
-  M5.Lcd.writedata(bfa >> 8);           // Bottom Fixed Area line count
-  M5.Lcd.writedata(bfa);
-}
-
-// ##############################################################################################
-// Setup the vertical scrolling start address pointer
-// ##############################################################################################
-void scrollAddress(uint16_t vsp) {
-  M5.Lcd.writecommand(ILI9341_VSCRSADD); // Vertical scrolling pointer
-  M5.Lcd.writedata(vsp>>8);
-  M5.Lcd.writedata(vsp);
-}
